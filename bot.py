@@ -29,6 +29,18 @@ def save_posts(posts):
     """Сохраняем список постов"""
     with open(STORAGE_FILE, 'w', encoding='utf-8') as f:
         json.dump(posts, f, ensure_ascii=False, indent=2)
+def commit_cache_to_github():
+    """Зберігаємо кеш в GitHub репозиторій"""
+    try:
+        import subprocess
+        subprocess.run(['git', 'config', '--global', 'user.email', 'bot@github.com'])
+        subprocess.run(['git', 'config', '--global', 'user.name', 'QUI Bot'])
+        subprocess.run(['git', 'add', STORAGE_FILE])
+        subprocess.run(['git', 'commit', '-m', 'Update posts cache'])
+        subprocess.run(['git', 'push'])
+        print("Кеш збережено в GitHub")
+    except Exception as e:
+        print(f"Помилка збереження кешу: {e}")
 def get_posts_from_page(url):
     """Получаем список постов со страницы"""
     try:
@@ -97,6 +109,7 @@ async def check_updates():
     
     # Сохраняем обновленный список
     save_posts(all_current_posts)
+    commit_cache_to_github()  # Додайте цей рядок
     print("Перевірка завершена!")
 
 # === ЗАПУСК ===
