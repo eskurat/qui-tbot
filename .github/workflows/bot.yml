@@ -2,14 +2,14 @@ name: QUI Bot
 
 on:
   schedule:
-    - cron: '*/15 * * * *'  # Кожні 15 хвилин
-  workflow_dispatch:  # Можливість запустити вручну
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
 
 jobs:
   run-bot:
     runs-on: ubuntu-latest
     
-steps:
+    steps:
     - name: Checkout code
       uses: actions/checkout@v3
       with:
