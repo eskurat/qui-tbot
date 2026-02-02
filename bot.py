@@ -97,15 +97,23 @@ async def check_updates():
         # Проверяем новые посты
         old_links = old_posts.get(url, [])
         
+        # Знаходимо нові пости
+        new_posts = []
         for post in posts:
             if post['link'] not in old_links:
-                # Новый пост!
-                message = f"🆕 <b>Нова публікація!</b>\n\n"
-                message += f"<b>{post['title']}</b>\n\n"
-                message += f"🔗 {post['link']}"
-                
-                await send_notification(bot, message)
-                print(f"Відправлено нотіфікацію: {post['title']}")
+                new_posts.append(post)
+        
+        # Перевертаємо список щоб старі були першими
+        new_posts.reverse()
+        
+        # Відправляємо повідомлення
+        for post in new_posts:
+            message = f"🆕 <b>Нова публікація!</b>\n\n"
+            message += f"<b>{post['title']}</b>\n\n"
+            message += f"🔗 {post['link']}"
+            
+            await send_notification(bot, message)
+            print(f"Надіслано сповіщення 🔔 {post['title']}")
     
     # Сохраняем обновленный список
     save_posts(all_current_posts)
