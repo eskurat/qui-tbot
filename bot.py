@@ -6,7 +6,6 @@ import json
 import os
 
 # === НАСТРОЙКИ ===
-import os
 BOT_TOKEN = os.environ.get('8363152020:AAHOCntXZ0jZbeqD68dwwPZVNtPCCK-Zpc0')
 CHAT_ID = os.environ.get('382027535')
 
