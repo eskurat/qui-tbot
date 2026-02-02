@@ -6,8 +6,8 @@ import json
 import os
 
 # === НАСТРОЙКИ ===
-BOT_TOKEN = os.environ.get('8363152020:AAHOCntXZ0jZbeqD68dwwPZVNtPCCK-Zpc0')
-CHAT_ID = os.environ.get('382027535')
+BOT_TOKEN = os.environ.get('BOT_TOKEN')
+CHAT_ID = os.environ.get('CHAT_ID')
 
 URLS = [
     "https://www.qui.help/forum/find-psychologist",
