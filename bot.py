@@ -53,11 +53,21 @@ def get_posts_from_page(url):
         print(f"Знайдено {len(articles)} статей на {url}")
         
         for article in articles:
+            # Спочатку шукаємо заголовок в .post-title
             title_elem = article.select_one('.post-title')
+            
+            # Якщо немає .post-title, беремо текст з .post-content
+            if not title_elem:
+                title_elem = article.select_one('.post-content')
+            
             link_elem = article.select_one('a.post-content-wrapper')
             
             if title_elem and link_elem:
                 title = title_elem.get_text(strip=True)
+                # Обрізаємо заголовок до 100 символів якщо дуже довгий
+                if len(title) > 100:
+                    title = title[:97] + '...'
+                
                 link = link_elem.get('href', '')
                 
                 if link and not link.startswith('http'):
@@ -71,7 +81,7 @@ def get_posts_from_page(url):
         
         return posts
     except Exception as e:
-        print(f"Помилка при парсінгу {url}: {e}")
+        print(f"Помилка парсінгу {url}: {e}")
         return []
 
 async def send_notification(bot, message):
