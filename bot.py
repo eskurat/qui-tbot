@@ -98,13 +98,11 @@ async def check_updates():
     all_current_posts = {}
     
     for url in URLS:
-        print(f"Перевіряю: {url}")
+        print(f"Проверяю: {url}")
         posts = get_posts_from_page(url)
         
-        # Сохраняем текущие посты
         all_current_posts[url] = [p['link'] for p in posts]
         
-        # Проверяем новые посты
         old_links = old_posts.get(url, [])
         
         # Знаходимо нові пости
@@ -116,18 +114,28 @@ async def check_updates():
         # Перевертаємо список щоб старі були першими
         new_posts.reverse()
         
-        # Відправляємо повідомлення
+        # Відправляємо повідомлення з різними заголовками
         for post in new_posts:
-            message = f"🆕 <b>Нова публікація!</b>\n\n"
+            # Визначаємо тип повідомлення за URL
+            if 'find-psychologist' in url:
+                emoji = "🔍"
+                header = "Новий запит!"
+            elif 'ask-psychologist' in url:
+                emoji = "❓"
+                header = "Нове питання!"
+            else:
+                emoji = "🆕"
+                header = "Нова публікація!"
+            
+            message = f"{emoji} <b>{header}</b>\n\n"
             message += f"<b>{post['title']}</b>\n\n"
             message += f"🔗 {post['link']}"
             
             await send_notification(bot, message)
-            print(f"Надіслано сповіщення 🔔 {post['title']}")
+            print(f"Надіслано сповіщення: {post['title']}")
     
-    # Сохраняем обновленный список
     save_posts(all_current_posts)
-    commit_cache_to_github()  # Додайте цей рядок
+    commit_cache_to_github()
     print("Перевірка завершена!")
 
 # === ЗАПУСК ===
